@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 function Register({ onRouteChange, loadUser }) {
   const [email, setEmail] = useState("");
@@ -6,34 +7,29 @@ function Register({ onRouteChange, loadUser }) {
   const [name, setName] = useState("");
 
   const onNameChange = (event) => {
-    setName({ name: event.target.value });
+    setName(event.target.value);
   };
 
   const onEmailChange = (event) => {
-    setEmail({ email: event.target.value });
+    setEmail(event.target.value);
   };
 
   const onPasswordChange = (event) => {
-    setPassword({ password: event.target.value });
+    setPassword(event.target.value);
   };
 
   const onSubmitSignIn = () => {
-    fetch("http://localhost:3000/register", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,
-        password,
-        name,
-      }),
-    })
-      .then((response) => response.json())
-      .then((user) => {
-        if (user) {
-          loadUser(user);
-          onRouteChange("home");
-        }
-      });
+    const user = {
+      id: uuidv4(),
+      name: name,
+      email: email,
+      entries: 0,
+      joined: new Date(),
+    };
+    console.log("user :", user);
+    loadUser(user);
+
+    onRouteChange("home");
   };
 
   return (
@@ -48,7 +44,7 @@ function Register({ onRouteChange, loadUser }) {
                   Name
                 </label>
                 <input
-                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  className="pa2 input-reset ba bg-transparent hover-bg-black-50 hover-white w-100"
                   type="text"
                   name="name"
                   id="name"
@@ -60,7 +56,7 @@ function Register({ onRouteChange, loadUser }) {
                   Email
                 </label>
                 <input
-                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  className="pa2 input-reset ba bg-transparent hover-bg-black-50 hover-white w-100"
                   type="email"
                   name="email-address"
                   id="email-address"
@@ -72,7 +68,7 @@ function Register({ onRouteChange, loadUser }) {
                   Password
                 </label>
                 <input
-                  className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  className="b pa2 input-reset ba bg-transparent hover-bg-black-50 hover-white w-100"
                   type="password"
                   name="password"
                   id="password"

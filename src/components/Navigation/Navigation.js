@@ -5,6 +5,12 @@ const Navigation = ({ onRouteChange, isSignedIn }) => {
     return (
       <nav style={{ display: "flex", justifyContent: "flex-end" }}>
         <p
+          className="f3 link dim black pa3 pointer"
+          style={{ marginRight: "auto" }}
+        >
+          Just a demo
+        </p>
+        <p
           onClick={() => onRouteChange("signout")}
           className="f3 link dim black underline pa3 pointer"
         >
@@ -15,6 +21,12 @@ const Navigation = ({ onRouteChange, isSignedIn }) => {
   } else {
     return (
       <nav style={{ display: "flex", justifyContent: "flex-end" }}>
+        <p
+          className="f3 link dim black pa3 pointer"
+          style={{ marginRight: "auto" }}
+        >
+          Just a demo
+        </p>
         <p
           onClick={() => onRouteChange("signin")}
           className="f3 link dim black underline pa3 pointer"

@@ -22,6 +22,7 @@ const App = () => {
   const [box, setBox] = useState("");
   const [route, setRoute] = useState("signin");
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [error, setError] = useState("");
   const [user, setUser] = useState({
     id: "",
     name: "",
@@ -32,13 +33,11 @@ const App = () => {
 
   const loadUser = (data) => {
     setUser({
-      user: {
-        id: data.id,
-        name: data.name,
-        email: data.email,
-        entries: data.entries,
-        joined: data.joined,
-      },
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined,
     });
   };
 
@@ -67,41 +66,22 @@ const App = () => {
   const onButtonSubmit = () => {
     setImageUrl(input);
     app.models
-      .predict(
-        // HEADS UP! Sometimes the Clarifai Models can be down or not working as they are constantly getting updated.
-        // A good way to check if the model you are using is up, is to check them on the clarifai website. For example,
-        // for the Face Detect Mode: https://www.clarifai.com/models/face-detection
-        // If that isn't working, then that means you will have to wait until their servers are back up. Another solution
-        // is to use a different version of their model that works like the ones found here: https://github.com/Clarifai/clarifai-javascript/blob/master/src/index.js
-        // so you would change from:
-        // .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-        // to:
-        // .predict('53e1df302c079b3db8a0a36033ed2d15', this.state.input)
-        Clarifai.FACE_DETECT_MODEL,
-        input
-      )
+      .predict(Clarifai.FACE_DETECT_MODEL, input)
       .then((response) => {
-        console.log("res: ", response);
-        displayFaceBox(calculateFaceLocation(response));
-        // if (response) {
-        //   fetch("http://localhost:3000/image", {
-        //     method: "put",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify({
-        //       id: user.id,
-        //     }),
-        //   })
-        //     .then((response) => response.json())
-        //     .then((count) => {
-        //       console.log({
-        //         id: user.id,
-        //       });
-        //       setUser(Object.assign(user, { entries: count }));
-        //     });
-        // }
-        // displayFaceBox(calculateFaceLocation(response));
+        if ("regions" in response.outputs[0].data) {
+          console.log(response.outputs[0].data);
+          displayFaceBox(calculateFaceLocation(response));
+          setUser({ ...user, entries: user.entries + 1 });
+          setError("");
+        } else {
+          setError("Sorry, I could not find a face");
+          displayFaceBox(0);
+        }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setError("Sorry, I could not find a face");
+        displayFaceBox(0);
+      });
   };
 
   const onRouteChange = (route) => {
@@ -123,7 +103,7 @@ const App = () => {
       {route === "home" ? (
         <div>
           <Logo />
-          <Rank name={user.name} entries={user.entries} />
+          <Rank name={user.name} entries={user.entries} error={error} />
           <ImageLinkForm
             onInputChange={onInputChange}
             onButtonSubmit={onButtonSubmit}
@@ -133,7 +113,12 @@ const App = () => {
       ) : route === "signin" ? (
         <Signin loadUser={loadUser} onRouteChange={onRouteChange} />
       ) : (
-        <Register loadUser={loadUser} onRouteChange={onRouteChange} />
+        <Register
+          setUser={setUser}
+          user={user}
+          loadUser={loadUser}
+          onRouteChange={onRouteChange}
+        />
       )}
     </div>
   );

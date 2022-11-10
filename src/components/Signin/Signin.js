@@ -43,7 +43,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
                   Email
                 </label>
                 <input
-                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  className="pa2 input-reset ba bg-transparent hover-bg-black-50 hover-white w-100"
                   type="email"
                   name="email-address"
                   id="email-address"
@@ -55,7 +55,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
                   Password
                 </label>
                 <input
-                  className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  className="b pa2 input-reset ba bg-transparent hover-bg-black-50 hover-white w-100"
                   type="password"
                   name="password"
                   id="password"
