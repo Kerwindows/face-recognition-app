@@ -98,7 +98,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <ParticlesBg type="cobweb" bg={true} />
+      <ParticlesBg className="bg-black-50" type="cobweb" bg={true} />
       <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
       {route === "home" ? (
         <div>
