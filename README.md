@@ -9,3 +9,6 @@ Click detect and the app will detect all the faces in the image.
 
 
 [Demo](https://kerwindows.github.io/face-recognition-app/)
+
+If the faces are not highlighted it means the API is currently offline or has been changed significantly.
+This has happened  before.
